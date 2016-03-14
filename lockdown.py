@@ -1,4 +1,21 @@
 #!/usr/bin/env python2
+#
+# NOTE: at the moment this is just a skeleton; a rough blueprint of
+#       interfaces.
+#
+# This is Lockdown, a library which implements a role-based mandatory
+#   access control layer (RBAC MAC) using function decorators. The goals
+#   of this library are to:
+#     1.  Allow for complete decoupling of the authentication and
+#         authorization sublayer from core program logic,
+#     2.  Allow for complete decoupling of authentication and authorization
+#         logic from their underlying policy representation (which may
+#         be anything from a YAML file, to an RDBMS with sessions, to
+#         a dynamic, programmatically-defined in-memory structure, to
+#         something else entirely).
+#
+# TODO -- figure out how resource types should be defined and used
+#
 
 from sets import Set
 
@@ -91,9 +108,11 @@ class RBACRole(RBACObject):
     return self.backend.getParent(self.ident)
 
 # TODO
-class RBACAction:
-  def __init__(self, backend, action_type, resource):
-    pass
+class RBACAction(RBACObject):
+  pass
 
+# TODO
+class RBACResource(RBACObject):
+  pass
   
 
