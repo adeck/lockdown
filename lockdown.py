@@ -29,6 +29,18 @@ class RBACBackend:
   # may throw an exception if the given context has expired
   def getRoles(self, context_ident):
     pass
+  # if getting a context creates some mapping on the backend, this
+  #   frees that space. So if, for example, getContext creates a session
+  #   s.t. context_ident is the session token, cleanupContext would
+  #   invalidate that session.
+  # this method must behave idempotently; if called multiple times in a row
+  #   with the same arguments, the program should be in the same state after
+  #   call n as it was after call 1 (assuming no other methods were called
+  #   in between).
+  # in backends for which this functionality would not make sense, this
+  #   should do nothing.
+  def cleanupContext(self, context_ident):
+    pass
   #### Role methods -- may throw exceptions if the given roles have changed
   def getCapabilities(self, role_ident):
     pass
@@ -39,6 +51,10 @@ class RBACBackend:
 
 # TODO
 class RBACContext(RBACObject):
+  def __enter__(self):
+    return self
+  def __exit__(self, exc_type, exc_value, traceback):
+    self.backend.cleanupContext(self.ident)
   def getRoles(self):
     return self.backend.getRoles(self.ident)
   # checks if any of the roles in the current context, or any of their
