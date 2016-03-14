@@ -21,7 +21,10 @@ class RBACObject:
 # provides the lowest-level interface to access-control operations.
 class RBACBackend:
   #### Context methods
-  def getContext(self, ident, auth_token):
+  # auth_ident may be the same as the context_ident for the returned
+  #   RBACContext object. However, that is not guaranteed to be the case,
+  #   so don't rely upon that being the case.
+  def getContext(self, auth_ident, auth_token):
     pass
   # may throw an exception if the given context has expired
   def getRoles(self, context_ident):
