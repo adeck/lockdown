@@ -70,8 +70,10 @@ class RBACBackend:
 class RBACContext(RBACObject):
   def __enter__(self):
     return self
-  def __exit__(self, exc_type, exc_value, traceback):
+  def close(self):
     self.backend.cleanupContext(self.ident)
+  def __exit__(self, exc_type, exc_value, traceback):
+    self.close()
   def getRoles(self):
     return self.backend.getRoles(self.ident)
   # checks if any of the roles in the current context, or any of their
